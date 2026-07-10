@@ -1,4 +1,4 @@
-package com.dabuliu.blog.review;
+package com.dabuliu.blog.article;
 
 public class Article {
 

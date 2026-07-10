@@ -1,7 +1,9 @@
-package com.dabuliu.blog.review;
+package com.dabuliu.blog.article;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Optional;
 
 public class ArticleManager {
 
@@ -12,17 +14,17 @@ public class ArticleManager {
         articles.add(article);
     }
 
-    public Article findById(long id) {
+    public Optional<Article> findById(long id) {
         for (Article article : articles) {
             // TODO 2：如果文章 id 等于参数 id，就返回该文章
             if (article.getId() == id) {
-                return article;
+                return Optional.of(article);
             }
         }
         
 
         // 全部查完仍未找到
-        return null;
+        return Optional.empty();
     }
 
     public List<Article> findPublishedArticles() {
@@ -42,4 +44,12 @@ public class ArticleManager {
         // TODO 4：返回文章数量
         return articles.size();
     }
+
+    public List<Article> searchByTitle(String keyword) {
+    return articles.stream()
+            // TODO：只保留标题中包含 keyword 的文章
+            // .filter(Article::getTitle.contains(keyword))
+            .filter(articles -> articles.getTitle().contains(keyword))
+            .toList();
+}
 }

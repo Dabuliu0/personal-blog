@@ -3,6 +3,10 @@ node_modules/
 dist/
 .vite/
 
+# Java 编译输出
+out/
+*.class
+
 # 后端构建文件
 target/
 *.class
