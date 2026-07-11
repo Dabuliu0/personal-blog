@@ -1,0 +1,1 @@
+Repository 提供数据能力，Service 对外提供业务能力，外部代码应该调用 Service，而不是直接碰 Repository。
