@@ -6,9 +6,9 @@ public class Main {
 
     public static void main(String[] args) {
         ArticleManager manager = new ArticleManager();
-        manager.addArticle(new Article(1L, "Java 学习记录", false));
-        manager.addArticle(new Article(2L, "Git 学习记录", true));
-        manager.addArticle(new Article(3L, "个人博客开发", false));
+        manager.addArticle(new Article(1L, "Java 学习记录","", false));
+        manager.addArticle(new Article(2L, "Git 学习记录","", true));
+        manager.addArticle(new Article(3L, "个人博客开发", "",false));
 
         System.out.println("文章总数：" + manager.getArticleCount());
 
@@ -26,6 +26,15 @@ public class Main {
             () ->System.out.println("没有找到文章")
 
         );
+
+        Article updated = manager.updateArticle(
+        99,
+    "测试",
+    "测试",
+    true
+);
+
+System.out.println("修改后的文章：" + updated);
 
     }
 }

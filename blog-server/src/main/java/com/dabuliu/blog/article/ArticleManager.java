@@ -49,7 +49,24 @@ public class ArticleManager {
     return articles.stream()
             // TODO：只保留标题中包含 keyword 的文章
             // .filter(Article::getTitle.contains(keyword))
-            .filter(articles -> articles.getTitle().contains(keyword))
+            .filter(article -> article.getTitle().contains(keyword))
             .toList();
+}
+
+public Article updateArticle(
+        long id,
+        String newTitle,
+        String newContent,
+        boolean published
+) {
+
+    Article article = findById(id)
+            .orElseThrow();
+
+    article.updateTitle(newTitle);
+    article.updateContent(newContent);
+    article.updatePublished(published);
+
+    return article;
 }
 }
