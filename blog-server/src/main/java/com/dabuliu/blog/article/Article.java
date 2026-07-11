@@ -1,6 +1,7 @@
 package com.dabuliu.blog.article;
 
 import java.time.LocalDateTime;
+import com.dabuliu.blog.exception.ArticleValidationException;
 
 public class Article {
 
@@ -15,8 +16,10 @@ public class Article {
         this.id = id;
 
         // TODO 1：给 title 赋值
+        checkTitle(title);
         this.title = title;
 
+        checkContent(content);
         this.content = content;
 
         // TODO 2：给 published 赋值
@@ -26,6 +29,19 @@ public class Article {
         this.updatedTime = LocalDateTime.now();
     }
 
+    private void checkTitle(String title){
+        if (title==null || title.trim().isEmpty()) {
+            throw new ArticleValidationException("标题不能为空");
+        }
+        
+    }
+
+    private void checkContent(String content){
+        if (content==null||content.trim().isEmpty()) {
+            throw new ArticleValidationException("正文不能为空");
+        }
+        
+    }
     
 
     public long getId() {
@@ -49,14 +65,17 @@ public class Article {
     public void publish() {
         // TODO 5：将 published 修改为 true
         this.published = true;
+        this.updatedTime = LocalDateTime.now();
     }
 
     public void updateTitle(String title) {
+    checkTitle(title);
     this.title = title;
     this.updatedTime = LocalDateTime.now();
 }
 
 public void updateContent(String content) {
+    checkContent(content);
     this.content = content;
     this.updatedTime = LocalDateTime.now();
 }
@@ -66,14 +85,15 @@ public void updatePublished(boolean published) {
     this.updatedTime = LocalDateTime.now();
 }
 
-   @Override
+@Override
 public String toString() {
     return "Article{" +
             "id=" + id +
             ", title='" + title + '\'' +
             ", content='" + content + '\'' +
             ", published=" + published +
-            ", updateTime=" + updatedTime +
+            ", createdTime=" + createdTime +
+            ", updatedTime=" + updatedTime +
             '}';
 }
 }
