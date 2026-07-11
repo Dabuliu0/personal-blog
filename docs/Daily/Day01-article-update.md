@@ -4,8 +4,6 @@
 
 管理员可以修改文章。
 
----
-
 ## 业务流程
 
 用户点击编辑按钮
@@ -26,16 +24,6 @@
 
 保存
 
----
-
-## 遇到的问题
-
-为什么不能直接：
-
-article.title = "xxx"
-
----
-
 ## 学到的知识
 
 ### 封装
@@ -44,11 +32,11 @@ article.title = "xxx"
 
 应该通过方法：
 
+``` java
 article.updateTitle()
+```
 
 控制修改。
-
----
 
 ### Optional
 
@@ -56,24 +44,32 @@ findById() 可能找不到文章。
 
 使用：
 
+``` java
 orElseThrow()
+```
 
-表示：
+表示找到继续，没有就停止。
 
-找到继续，没有就停止。
+## 最终实现
 
----
+-   Article 负责自身状态修改
+-   ArticleService 负责业务流程
+-   ArticleRepository 负责数据访问
+-   使用自定义异常处理文章校验失败
 
-## 设计思考
+结构：
 
-用户提交的数据不能完全相信。
+``` text
+Main
 
-前端提交的是修改意图。
+↓
 
-后端负责验证规则。
+ArticleService
 
----
+↓
 
-## 下一步
+ArticleRepository
 
-实现 updateArticle()
+↓
+
+Article
