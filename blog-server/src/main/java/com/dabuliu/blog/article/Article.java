@@ -11,8 +11,31 @@ public class Article {
     private boolean published;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
+    private boolean deleted;
 
-    public Article(long id, String title,String content, boolean published) {
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void delete() {
+        if (deleted) {
+            throw new IllegalStateException("文章已经删除");
+        }
+
+        this.deleted = true;
+        this.updatedTime = LocalDateTime.now();
+    }
+
+    public void restore() {
+        if (!deleted) {
+            throw new IllegalStateException("文章未被删除");
+        }
+
+        this.deleted = false;
+        this.updatedTime = LocalDateTime.now();
+    }
+
+    public Article(long id, String title, String content, boolean published) {
         this.id = id;
 
         // TODO 1：给 title 赋值
@@ -29,20 +52,19 @@ public class Article {
         this.updatedTime = LocalDateTime.now();
     }
 
-    private void checkTitle(String title){
-        if (title==null || title.trim().isEmpty()) {
+    private void checkTitle(String title) {
+        if (title == null || title.trim().isEmpty()) {
             throw new ArticleValidationException("标题不能为空");
         }
-        
+
     }
 
-    private void checkContent(String content){
-        if (content==null||content.trim().isEmpty()) {
+    private void checkContent(String content) {
+        if (content == null || content.trim().isEmpty()) {
             throw new ArticleValidationException("正文不能为空");
         }
-        
+
     }
-    
 
     public long getId() {
         return this.id;
@@ -58,7 +80,7 @@ public class Article {
         return this.published;
     }
 
-    public String getContent(){
+    public String getContent() {
         return this.content;
     }
 
@@ -69,31 +91,32 @@ public class Article {
     }
 
     public void updateTitle(String title) {
-    checkTitle(title);
-    this.title = title;
-    this.updatedTime = LocalDateTime.now();
-}
+        checkTitle(title);
+        this.title = title;
+        this.updatedTime = LocalDateTime.now();
+    }
 
-public void updateContent(String content) {
-    checkContent(content);
-    this.content = content;
-    this.updatedTime = LocalDateTime.now();
-}
+    public void updateContent(String content) {
+        checkContent(content);
+        this.content = content;
+        this.updatedTime = LocalDateTime.now();
+    }
 
-public void updatePublished(boolean published) {
-    this.published = published;
-    this.updatedTime = LocalDateTime.now();
-}
+    public void updatePublished(boolean published) {
+        this.published = published;
+        this.updatedTime = LocalDateTime.now();
+    }
 
-@Override
-public String toString() {
-    return "Article{" +
-            "id=" + id +
-            ", title='" + title + '\'' +
-            ", content='" + content + '\'' +
-            ", published=" + published +
-            ", createdTime=" + createdTime +
-            ", updatedTime=" + updatedTime +
-            '}';
-}
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", published=" + published +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
+                ", deleted=" + deleted +
+                '}';
+    }
 }
