@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class InMemoryArticleRepository implements ArticleRepository {
 
     private final List<Article> articles = new ArrayList<>();

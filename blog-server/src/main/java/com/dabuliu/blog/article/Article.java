@@ -35,6 +35,10 @@ public class Article {
         this.updatedTime = LocalDateTime.now();
     }
 
+    public Article() {
+
+    }
+
     public Article(long id, String title, String content, boolean published) {
         this.id = id;
 

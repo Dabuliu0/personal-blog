@@ -1,5 +1,5 @@
 package com.dabuliu.blog.article;
-
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.dabuliu.blog.exception.ArticleNotFoundException;
 import com.dabuliu.blog.exception.DuplicateArticleIdException;
 
+@Service
 public class ArticleService {
 
     private final ArticleRepository repository;
