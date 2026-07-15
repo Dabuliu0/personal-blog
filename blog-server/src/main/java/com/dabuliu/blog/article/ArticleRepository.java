@@ -10,4 +10,6 @@ public interface ArticleRepository {
     Optional<Article> findById(long id);
 
     List<Article> findAll();
+
+    List<Article> searchByTitle(String keyword);
 }

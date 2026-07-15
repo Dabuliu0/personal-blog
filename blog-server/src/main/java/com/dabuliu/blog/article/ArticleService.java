@@ -64,14 +64,9 @@ public class ArticleService {
             throw new IllegalArgumentException("搜索关键词不能为空");
         }
 
-        String normalizedKeyword = keyword.trim().toLowerCase();
+        String normalizedKeyword = keyword.trim();
 
-        return repository.findAll().stream()
-                .filter(article -> !article.isDeleted())
-                .filter(article -> article.getTitle()
-                        .toLowerCase()
-                        .contains(normalizedKeyword))
-                .toList();
+        return repository.searchByTitle(normalizedKeyword);
     }
 
     @Transactional

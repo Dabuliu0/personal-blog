@@ -29,4 +29,9 @@ public class JpaArticleRepositoryAdapter implements ArticleRepository {
     public List<Article> findAll() {
         return jpaRepository.findAll();
     }
+
+    @Override
+    public  List<Article> searchByTitle(String keyword){
+        return jpaRepository.findByTitleContainingIgnoreCaseAndDeletedFalse(keyword);
+    }
 }

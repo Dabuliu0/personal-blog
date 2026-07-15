@@ -30,4 +30,15 @@ public class InMemoryArticleRepository implements ArticleRepository {
         return articles;
     }
 
+    @Override
+    public List<Article> searchByTitle(String keyword){
+        
+        String lowKeyword = keyword.toLowerCase();
+
+        return findAll().stream()
+        .filter(article->!article.isDeleted())
+        .filter(article->article.getTitle().toLowerCase().contains(lowKeyword))
+        .toList();
+    }
+
 }
