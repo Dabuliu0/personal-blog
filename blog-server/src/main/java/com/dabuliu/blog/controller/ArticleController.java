@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dabuliu.blog.article.Article;
 import com.dabuliu.blog.article.ArticleService;
@@ -35,6 +36,12 @@ public class ArticleController {
 
         return service.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(id));
+    }
+
+    @GetMapping("/articles/search")
+    public List<Article> searchArticles(@RequestParam("keyword") String keyword){
+        return service.searchByTitle(keyword);
+                
     }
 
     @PostMapping("/articles")

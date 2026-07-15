@@ -1,4 +1,5 @@
 package com.dabuliu.blog.article;
+
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -61,11 +62,17 @@ public class ArticleService {
 
     // 根据标题找文章
     public List<Article> searchByTitle(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            throw new IllegalArgumentException("搜索关键词不能为空");
+        }
+
+        String normalizedKeyword = keyword.trim().toLowerCase();
+
         return repository.findAll().stream()
-                // TODO：只保留标题中包含 keyword 的文章
                 .filter(article -> !article.isDeleted())
-                // .filter(Article::getTitle.contains(keyword))
-                .filter(article -> article.getTitle().contains(keyword))
+                .filter(article -> article.getTitle()
+                        .toLowerCase()
+                        .contains(normalizedKeyword))
                 .toList();
     }
 
@@ -94,16 +101,17 @@ public class ArticleService {
     }
 
     // 查询所有未删除文章
-   public List<Article> findAllArticles() {
-    return repository.findAll().stream()
-            .filter(article -> !article.isDeleted())
-            .sorted(Comparator.comparingLong(Article::getId))
-            .toList();
-}
+    public List<Article> findAllArticles() {
+        return repository.findAll().stream()
+                .filter(article -> !article.isDeleted())
+                .sorted(Comparator.comparingLong(Article::getId))
+                .toList();
+    }
 
     // 根据Id找文章
     public Optional<Article> findById(long id) {
         return repository.findById(id)
                 .filter(article -> !article.isDeleted());
     }
+
 }
