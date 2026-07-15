@@ -17,9 +17,13 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        if (service.getArticleCount() > 0) {
+        return;
+    }
+
         service.addArticle(
                 new Article(
-                        1L,
+                        
                         "Java 学习记录",
                         "Spring Boot 入门",
                         true
@@ -28,7 +32,7 @@ public class DataInitializer implements CommandLineRunner {
 
         service.addArticle(
                 new Article(
-                        2L,
+                
                         "博客开发记录",
                         "第一次接口开发",
                         false

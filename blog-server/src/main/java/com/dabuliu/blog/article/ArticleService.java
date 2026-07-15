@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.dabuliu.blog.exception.ArticleNotFoundException;
-import com.dabuliu.blog.exception.DuplicateArticleIdException;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ArticleService {
@@ -23,14 +23,12 @@ public class ArticleService {
 
     // 添加文章
     public void addArticle(Article article) {
-        if (repository.findById(article.getId()).isPresent()) {
-            throw new DuplicateArticleIdException(article.getId());
-        }
-
+       
         repository.save(article);
     }
 
     // 删除文章
+    @Transactional
     public void deleteArticle(long id) {
         Article article = repository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(id));
@@ -76,6 +74,7 @@ public class ArticleService {
                 .toList();
     }
 
+    @Transactional
     public void restoreArticle(long id) {
         Article article = repository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(id));
@@ -84,6 +83,7 @@ public class ArticleService {
     }
 
     // 修改文章
+    @Transactional
     public Article updateArticle(
             long id,
             String newTitle,

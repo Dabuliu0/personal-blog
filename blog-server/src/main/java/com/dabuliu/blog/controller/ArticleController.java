@@ -32,7 +32,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public Article findById(@PathVariable long id) {
+    public Article findById(@PathVariable("id") long id) {
 
         return service.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(id));
@@ -51,7 +51,7 @@ public class ArticleController {
 
     @PutMapping("/articles/{id}")
     public Article updateArticle(
-            @PathVariable long id,
+            @PathVariable("id") long id,
             @RequestBody ArticleUpdateRequest request) {
 
         return service.updateArticle(
@@ -62,7 +62,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/articles/{id}")
-    public void deleteArticle(@PathVariable long id) {
+    public void deleteArticle(@PathVariable("id") long id) {
 
         service.deleteArticle(id);
     }

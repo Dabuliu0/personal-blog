@@ -3,9 +3,20 @@ package com.dabuliu.blog.article;
 import java.time.LocalDateTime;
 import com.dabuliu.blog.exception.ArticleValidationException;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "articles")
 public class Article {
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String title;
     private String content;
     private boolean published;
@@ -39,8 +50,7 @@ public class Article {
 
     }
 
-    public Article(long id, String title, String content, boolean published) {
-        this.id = id;
+    public Article( String title, String content, boolean published) {
 
         // TODO 1：给 title 赋值
         checkTitle(title);
@@ -70,7 +80,7 @@ public class Article {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 

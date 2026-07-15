@@ -10,11 +10,10 @@ class ArticleTest {
     @Test
     void shouldDeleteArticle() {
         Article article = new Article(
-                1L,
+
                 "Java 学习记录",
                 "测试正文",
-                false
-        );
+                false);
 
         assertFalse(article.isDeleted());
 

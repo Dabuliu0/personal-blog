@@ -13,13 +13,13 @@ class ArticleServiceTest {
         ArticleService service = new ArticleService(repository);
 
         service.addArticle(new Article(
-                1L,
+                
                 "第一篇文章",
                 "正文一",
                 false));
 
         service.addArticle(new Article(
-                2L,
+                
                 "第二篇文章",
                 "正文二",
                 true));
@@ -33,13 +33,13 @@ class ArticleServiceTest {
         ArticleService service = new ArticleService(repository);
 
         service.addArticle(new Article(
-                1L,
+                
                 "Java 入门",
                 "正文一",
                 false));
 
         service.addArticle(new Article(
-                2L,
+                
                 "Spring Boot 学习",
                 "正文二",
                 false));
