@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dabuliu.blog.article.Article;
 import com.dabuliu.blog.article.ArticleService;
+import com.dabuliu.blog.article.CreateArticleRequest;
 import com.dabuliu.blog.exception.ArticleNotFoundException;
+import jakarta.validation.Valid;
 
 @RestController
 public class ArticleController {
@@ -51,7 +53,14 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public void addArticle(@RequestBody Article article) {
+    public void addArticle(
+            @Valid @RequestBody CreateArticleRequest request) {
+
+        Article article = new Article(
+                request.title(),
+                request.content(),
+                request.published());
+
         service.addArticle(article);
     }
 
