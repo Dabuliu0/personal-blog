@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.dabuliu.blog.exception.ArticleNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import com.dabuliu.blog.category.Category;
 
 @Service
 public class ArticleService {
@@ -23,6 +24,14 @@ public class ArticleService {
     // 添加文章
     public void addArticle(Article article) {
 
+        repository.save(article);
+    }
+
+    public void addArticle(
+            Article article,
+            Category category) {
+
+        article.assignCategory(category);
         repository.save(article);
     }
 

@@ -26,4 +26,10 @@ public class CategoryService {
     public List<Category> findAllCategories() {
         return repository.findAll();
     }
+
+    public Category findCategoryById(long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "分类不存在，id=" + id));
+    }
 }

@@ -8,6 +8,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import com.dabuliu.blog.category.Category;
+
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @Table(name = "articles")
@@ -24,8 +28,25 @@ public class Article {
     private LocalDateTime updatedTime;
     private boolean deleted;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void assignCategory(Category category) {
+        if (category == null) {
+            throw new IllegalArgumentException("文章分类不能为空");
+        }
+
+        this.category = category;
+        this.updatedTime = LocalDateTime.now();
     }
 
     public void delete() {
@@ -50,7 +71,7 @@ public class Article {
 
     }
 
-    public Article( String title, String content, boolean published) {
+    public Article(String title, String content, boolean published) {
 
         // TODO 1：给 title 赋值
         checkTitle(title);

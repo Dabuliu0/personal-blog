@@ -18,14 +18,21 @@ import com.dabuliu.blog.article.ArticleService;
 import com.dabuliu.blog.article.CreateArticleRequest;
 import com.dabuliu.blog.exception.ArticleNotFoundException;
 import jakarta.validation.Valid;
+import com.dabuliu.blog.category.Category;
+import com.dabuliu.blog.category.CategoryService;
 
 @RestController
 public class ArticleController {
 
     private final ArticleService service;
+    private final CategoryService categoryService;
 
-    public ArticleController(ArticleService service) {
+    public ArticleController(
+            ArticleService service,
+            CategoryService categoryService) {
+
         this.service = service;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/articles")
@@ -56,12 +63,15 @@ public class ArticleController {
     public void addArticle(
             @Valid @RequestBody CreateArticleRequest request) {
 
+        Category category = categoryService
+                .findCategoryById(request.categoryId());
+
         Article article = new Article(
                 request.title(),
                 request.content(),
                 request.published());
 
-        service.addArticle(article);
+        service.addArticle(article, category);
     }
 
     @PutMapping("/articles/{id}")

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.dabuliu.blog.category.Category;
 
 class ArticleServiceTest {
 
@@ -133,6 +134,28 @@ class ArticleServiceTest {
 
                 assertEquals(1, result.size());
                 assertEquals("Java 第二篇", result.get(0).getTitle());
+        }
+
+        @Test
+        void shouldAddArticleWithCategory() {
+                ArticleRepository repository = new InMemoryArticleRepository();
+
+                ArticleService service = new ArticleService(repository);
+
+                Category category = new Category("Java");
+
+                Article article = new Article(
+                                "分类文章",
+                                "关系映射测试",
+                                false);
+
+                service.addArticle(article, category);
+
+                var savedArticle = repository.findAll().get(0);
+
+                assertEquals(
+                                "Java",
+                                savedArticle.getCategory().getName());
         }
 
 }
