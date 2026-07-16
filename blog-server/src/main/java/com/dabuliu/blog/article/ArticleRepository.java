@@ -12,4 +12,6 @@ public interface ArticleRepository {
     List<Article> findAll();
 
     List<Article> searchByTitle(String keyword);
+
+    List<Article> findPage(int page, int size);
 }

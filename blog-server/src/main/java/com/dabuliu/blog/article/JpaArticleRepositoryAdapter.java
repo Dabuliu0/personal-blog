@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @Repository
 public class JpaArticleRepositoryAdapter implements ArticleRepository {
@@ -31,7 +33,17 @@ public class JpaArticleRepositoryAdapter implements ArticleRepository {
     }
 
     @Override
-    public  List<Article> searchByTitle(String keyword){
+    public List<Article> searchByTitle(String keyword) {
         return jpaRepository.findByTitleContainingIgnoreCaseAndDeletedFalse(keyword);
+    }
+
+    @Override
+    public List<Article> findPage(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(
+                page,
+                size,
+                Sort.by("id").ascending());
+
+        return jpaRepository.findByDeletedFalse(pageRequest).getContent();
     }
 }

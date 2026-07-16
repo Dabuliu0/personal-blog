@@ -31,14 +31,23 @@ public class InMemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> searchByTitle(String keyword){
-        
+    public List<Article> searchByTitle(String keyword) {
+
         String lowKeyword = keyword.toLowerCase();
 
         return findAll().stream()
-        .filter(article->!article.isDeleted())
-        .filter(article->article.getTitle().toLowerCase().contains(lowKeyword))
-        .toList();
+                .filter(article -> !article.isDeleted())
+                .filter(article -> article.getTitle().toLowerCase().contains(lowKeyword))
+                .toList();
+    }
+
+    @Override
+    public List<Article> findPage(int page, int size) {
+        return findAll().stream()
+                .filter(article -> !article.isDeleted())
+                .skip((long) page * size)
+                .limit(size)
+                .toList();
     }
 
 }

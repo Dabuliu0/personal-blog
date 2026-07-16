@@ -2,7 +2,6 @@ package com.dabuliu.blog.article;
 
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import java.util.Optional;
@@ -23,7 +22,7 @@ public class ArticleService {
 
     // 添加文章
     public void addArticle(Article article) {
-       
+
         repository.save(article);
     }
 
@@ -96,11 +95,16 @@ public class ArticleService {
     }
 
     // 查询所有未删除文章
-    public List<Article> findAllArticles() {
-        return repository.findAll().stream()
-                .filter(article -> !article.isDeleted())
-                .sorted(Comparator.comparingLong(Article::getId))
-                .toList();
+    public List<Article> findAllArticles(int page, int size) {
+        if (page < 0) {
+            throw new IllegalArgumentException("页码不能小于 0");
+        }
+
+        if (size < 1 || size > 100) {
+            throw new IllegalArgumentException("每页数量必须在 1 到 100 之间");
+        }
+
+        return repository.findPage(page, size);
     }
 
     // 根据Id找文章

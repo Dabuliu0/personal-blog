@@ -27,8 +27,11 @@ public class ArticleController {
     }
 
     @GetMapping("/articles")
-    public List<Article> findArticles() {
-        return service.findAllArticles();
+    public List<Article> findArticles(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size) {
+
+        return service.findAllArticles(page, size);
     }
 
     @GetMapping("/articles/{id}")
@@ -39,9 +42,9 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/search")
-    public List<Article> searchArticles(@RequestParam("keyword") String keyword){
+    public List<Article> searchArticles(@RequestParam("keyword") String keyword) {
         return service.searchByTitle(keyword);
-                
+
     }
 
     @PostMapping("/articles")
