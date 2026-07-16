@@ -33,8 +33,21 @@ public class JpaArticleRepositoryAdapter implements ArticleRepository {
     }
 
     @Override
-    public List<Article> searchByTitle(String keyword) {
-        return jpaRepository.findByTitleContainingIgnoreCaseAndDeletedFalse(keyword);
+    public List<Article> searchByTitle(
+            String keyword,
+            int page,
+            int size) {
+
+        PageRequest pageRequest = PageRequest.of(
+                page,
+                size,
+                Sort.by("id").ascending());
+
+        return jpaRepository
+                .findByTitleContainingIgnoreCaseAndDeletedFalse(
+                        keyword,
+                        pageRequest)
+                .getContent();
     }
 
     @Override

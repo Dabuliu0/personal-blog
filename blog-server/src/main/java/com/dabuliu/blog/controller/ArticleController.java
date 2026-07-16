@@ -42,9 +42,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/search")
-    public List<Article> searchArticles(@RequestParam("keyword") String keyword) {
-        return service.searchByTitle(keyword);
+    public List<Article> searchArticles(
+            @RequestParam("keyword") String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size) {
 
+        return service.searchByTitle(keyword, page, size);
     }
 
     @PostMapping("/articles")

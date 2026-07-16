@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 public class InMemoryArticleRepository implements ArticleRepository {
 
     private final List<Article> articles = new ArrayList<>();
@@ -31,13 +30,20 @@ public class InMemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> searchByTitle(String keyword) {
+    public List<Article> searchByTitle(
+            String keyword,
+            int page,
+            int size) {
 
-        String lowKeyword = keyword.toLowerCase();
+        String lowerKeyword = keyword.toLowerCase();
 
         return findAll().stream()
                 .filter(article -> !article.isDeleted())
-                .filter(article -> article.getTitle().toLowerCase().contains(lowKeyword))
+                .filter(article -> article.getTitle()
+                        .toLowerCase()
+                        .contains(lowerKeyword))
+                .skip((long) page * size)
+                .limit(size)
                 .toList();
     }
 

@@ -44,7 +44,7 @@ class ArticleServiceTest {
                                 "正文二",
                                 false));
 
-                var result = service.searchByTitle("java");
+                var result = service.searchByTitle("java", 0, 10);
 
                 assertEquals(1, result.size());
                 assertEquals("Java 入门", result.get(0).getTitle());
@@ -57,7 +57,7 @@ class ArticleServiceTest {
 
                 assertThrows(
                                 IllegalArgumentException.class,
-                                () -> service.searchByTitle("   "));
+                                () -> service.searchByTitle("   ", 0, 10));
         }
 
         @Test
@@ -102,6 +102,37 @@ class ArticleServiceTest {
                 assertThrows(
                                 IllegalArgumentException.class,
                                 () -> service.findAllArticles(0, 101));
+        }
+
+        @Test
+        void shouldPaginateSearchResults() {
+                ArticleRepository repository = new InMemoryArticleRepository();
+                ArticleService service = new ArticleService(repository);
+
+                service.addArticle(new Article(
+                                "Java 第一篇",
+                                "正文一",
+                                false));
+
+                service.addArticle(new Article(
+                                "Python 学习",
+                                "正文二",
+                                false));
+
+                service.addArticle(new Article(
+                                "Java 第二篇",
+                                "正文三",
+                                false));
+
+                service.addArticle(new Article(
+                                "Java 第三篇",
+                                "正文四",
+                                false));
+
+                var result = service.searchByTitle("java", 1, 1);
+
+                assertEquals(1, result.size());
+                assertEquals("Java 第二篇", result.get(0).getTitle());
         }
 
 }

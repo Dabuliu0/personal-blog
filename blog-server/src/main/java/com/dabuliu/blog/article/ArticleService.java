@@ -58,14 +58,30 @@ public class ArticleService {
     }
 
     // 根据标题找文章
-    public List<Article> searchByTitle(String keyword) {
+    public List<Article> searchByTitle(
+            String keyword,
+            int page,
+            int size) {
+
         if (keyword == null || keyword.isBlank()) {
             throw new IllegalArgumentException("搜索关键词不能为空");
         }
 
+        if (page < 0) {
+            throw new IllegalArgumentException("页码不能小于 0");
+        }
+
+        if (size < 1 || size > 100) {
+            throw new IllegalArgumentException(
+                    "每页数量必须在 1 到 100 之间");
+        }
+
         String normalizedKeyword = keyword.trim();
 
-        return repository.searchByTitle(normalizedKeyword);
+        return repository.searchByTitle(
+                normalizedKeyword,
+                page,
+                size);
     }
 
     @Transactional

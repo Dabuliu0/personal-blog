@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SpringDataArticleJpaRepository
                 extends JpaRepository<Article, Long> {
-        List<Article> findByTitleContainingIgnoreCaseAndDeletedFalse(String keyword);
+        Page<Article> findByTitleContainingIgnoreCaseAndDeletedFalse(
+        String keyword,
+        Pageable pageable);
         Page<Article> findByDeletedFalse(Pageable pageable);
 }
