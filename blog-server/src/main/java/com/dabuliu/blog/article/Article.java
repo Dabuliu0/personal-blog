@@ -13,6 +13,12 @@ import com.dabuliu.blog.category.Category;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import com.dabuliu.blog.user.UserAccount;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 @Entity
 @Table(name = "articles")
 public class Article {
@@ -31,6 +37,24 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private UserAccount author;
+
+    @JsonIgnore
+    public UserAccount getAuthor() {
+        return author;
+    }
+
+    public void assignAuthor(UserAccount author) {
+        if (author == null) {
+            throw new IllegalArgumentException("作者不能为空");
+        }
+
+        this.author = author;
+        this.updatedTime = LocalDateTime.now();
+    }
 
     public boolean isDeleted() {
         return deleted;

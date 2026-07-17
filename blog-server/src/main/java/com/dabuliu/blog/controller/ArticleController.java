@@ -20,19 +20,26 @@ import com.dabuliu.blog.exception.ArticleNotFoundException;
 import jakarta.validation.Valid;
 import com.dabuliu.blog.category.Category;
 import com.dabuliu.blog.category.CategoryService;
+import org.springframework.security.core.Authentication;
+
+import com.dabuliu.blog.user.UserAccount;
+import com.dabuliu.blog.user.UserService;
 
 @RestController
 public class ArticleController {
 
     private final ArticleService service;
     private final CategoryService categoryService;
+    private final UserService userService;
 
     public ArticleController(
             ArticleService service,
-            CategoryService categoryService) {
+            CategoryService categoryService,
+            UserService userService) {
 
         this.service = service;
         this.categoryService = categoryService;
+        this.userService = userService;
     }
 
     @GetMapping("/articles")
@@ -61,34 +68,53 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public void addArticle(
-            @Valid @RequestBody CreateArticleRequest request) {
+            @Valid @RequestBody CreateArticleRequest request,
+            Authentication authentication) {
 
         Category category = categoryService
                 .findCategoryById(request.categoryId());
+
+        UserAccount author = userService
+                .findUserByUsername(
+                        authentication.getName());
 
         Article article = new Article(
                 request.title(),
                 request.content(),
                 request.published());
 
-        service.addArticle(article, category);
+        service.addArticle(article, category, author);
     }
 
     @PutMapping("/articles/{id}")
     public Article updateArticle(
             @PathVariable("id") long id,
-            @RequestBody ArticleUpdateRequest request) {
+            @RequestBody ArticleUpdateRequest request,
+            Authentication authentication) {
 
-        return service.updateArticle(
+        UserAccount currentUser = userService
+                .findUserByUsername(
+                        authentication.getName());
+
+        return service.updateOwnedArticle(
                 id,
                 request.getTitle(),
                 request.getContent(),
-                request.isPublished());
+                request.isPublished(),
+                currentUser);
     }
 
     @DeleteMapping("/articles/{id}")
-    public void deleteArticle(@PathVariable("id") long id) {
+    public void deleteArticle(
+            @PathVariable("id") long id,
+            Authentication authentication) {
 
-        service.deleteArticle(id);
+        UserAccount currentUser = userService
+                .findUserByUsername(
+                        authentication.getName());
+
+        service.deleteOwnedArticle(
+                id,
+                currentUser);
     }
 }

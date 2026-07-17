@@ -3,7 +3,6 @@ package com.dabuliu.blog.user;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 //注册：查重、密码编码、保存用户
 @Service
 public class UserService {
@@ -46,8 +45,7 @@ public class UserService {
             throw new IllegalArgumentException("邮箱已经存在");
         }
 
-        String passwordHash =
-                passwordEncoder.encode(rawPassword);
+        String passwordHash = passwordEncoder.encode(rawPassword);
 
         UserAccount user = new UserAccount(
                 normalizedUsername,
@@ -55,5 +53,13 @@ public class UserService {
                 passwordHash);
 
         repository.save(user);
+    }
+
+    public UserAccount findUserByUsername(
+            String username) {
+
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "用户不存在"));
     }
 }

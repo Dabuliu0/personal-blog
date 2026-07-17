@@ -10,6 +10,11 @@ import com.dabuliu.blog.exception.ArticleNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import com.dabuliu.blog.category.Category;
 
+import com.dabuliu.blog.user.UserAccount;
+import org.springframework.security.access.AccessDeniedException;
+
+import com.dabuliu.blog.user.UserAccount;
+
 @Service
 public class ArticleService {
 
@@ -29,6 +34,17 @@ public class ArticleService {
 
     public void addArticle(
             Article article,
+            Category category,
+            UserAccount author) {
+
+        article.assignCategory(category);
+        article.assignAuthor(author);
+
+        repository.save(article);
+    }
+
+    public void addArticle(
+            Article article,
             Category category) {
 
         article.assignCategory(category);
@@ -42,6 +58,55 @@ public class ArticleService {
                 .orElseThrow(() -> new ArticleNotFoundException(id));
 
         article.delete();
+    }
+
+    @Transactional
+    public void deleteOwnedArticle(
+            long id,
+            UserAccount currentUser) {
+
+        Article article = findOwnedArticle(
+                id,
+                currentUser);
+
+        article.delete();
+    }
+
+    @Transactional
+    public Article updateOwnedArticle(
+            long id,
+            String newTitle,
+            String newContent,
+            boolean published,
+            UserAccount currentUser) {
+
+        Article article = findOwnedArticle(
+                id,
+                currentUser);
+
+        article.updateTitle(newTitle);
+        article.updateContent(newContent);
+        article.updatePublished(published);
+
+        return article;
+    }
+
+    private Article findOwnedArticle(
+            long id,
+            UserAccount currentUser) {
+
+        Article article = repository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException(id));
+
+        if (article.getAuthor() == null
+                || !article.getAuthor().getId()
+                        .equals(currentUser.getId())) {
+
+            throw new AccessDeniedException(
+                    "无权操作这篇文章");
+        }
+
+        return article;
     }
 
     // 寻找所有已发布的文章
