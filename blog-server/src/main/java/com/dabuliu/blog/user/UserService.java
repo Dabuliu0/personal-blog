@@ -3,6 +3,8 @@ package com.dabuliu.blog.user;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
+//注册：查重、密码编码、保存用户
 @Service
 public class UserService {
 

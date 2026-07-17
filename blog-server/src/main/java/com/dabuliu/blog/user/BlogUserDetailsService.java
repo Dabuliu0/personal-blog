@@ -6,9 +6,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+
+//把数据库用户交给 Spring Security 做认证
 @Service
 public class BlogUserDetailsService
         implements UserDetailsService {
+        //UserDetailsService是内部的
 
     private final UserRepository repository;
 

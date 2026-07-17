@@ -1,0 +1,19 @@
+package com.dabuliu.blog.user;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+
+//接收未来登录接口的用户名和密码
+public record LoginRequest(
+
+        @NotBlank(message = "用户名不能为空")
+        String username,
+
+        @NotBlank(message = "密码不能为空")
+        @Size(
+                min = 8,
+                max = 72,
+                message = "密码长度必须在 8 到 72 个字符之间")
+        String password) {
+}

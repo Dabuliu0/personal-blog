@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+
+//接收注册 JSON
 public record RegisterUserRequest(
 
         @NotBlank(message = "用户名不能为空")
