@@ -9,6 +9,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import com.dabuliu.blog.exception.RestAccessDeniedHandler;
+import com.dabuliu.blog.exception.RestAuthenticationEntryPoint;
 
 // 规定哪些接口公开、哪些必须登录
 @Configuration
@@ -16,7 +18,10 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(
-                        HttpSecurity http) throws Exception {
+                        HttpSecurity http,
+                        RestAuthenticationEntryPoint authenticationEntryPoint,
+                        RestAccessDeniedHandler accessDeniedHandler)
+                        throws Exception {
 
                 http
                                 .csrf(csrf -> csrf.disable())
@@ -41,7 +46,16 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(
                                                                 SessionCreationPolicy.STATELESS))
+
+                                .exceptionHandling(exception -> exception
+                                                .authenticationEntryPoint(
+                                                                authenticationEntryPoint)
+                                                .accessDeniedHandler(
+                                                                accessDeniedHandler))
+
                                 .oauth2ResourceServer(oauth2 -> oauth2
+                                                .authenticationEntryPoint(
+                                                                authenticationEntryPoint)
                                                 .jwt(Customizer.withDefaults()));
 
                 return http.build();
